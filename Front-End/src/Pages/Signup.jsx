@@ -1,7 +1,9 @@
 import React, { useState } from "react";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 const SignUp = () => {
+  let navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
@@ -10,7 +12,7 @@ const SignUp = () => {
     e.preventDefault();
     if (password !== confirmPassword) {
       alert("Passwords do not match!");
-      return;
+      return ;
     }
     try {
       await axios.post("http://localhost:5000/api/users/register", {
@@ -18,6 +20,7 @@ const SignUp = () => {
         password,
       });
       alert("Registration successful!");
+      navigate("/");
     } catch (error) {
       alert("Registration failed!");
     }
@@ -129,7 +132,7 @@ const SignUp = () => {
               <p className="text-sm font-light text-gray-500 dark:text-gray-400">
                 Already have an account?{" "}
                 <a
-                  href="#"
+                  href="/"
                   className="font-medium text-primary-600 hover:underline dark:text-primary-500"
                 >
                   Login here

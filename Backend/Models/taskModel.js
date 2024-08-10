@@ -1,8 +1,29 @@
 const pool = require("../Config/db");
 
 class Task {
+  static async getTasksByUserId(user_id) {
+    try {
+      const result = await pool.query(
+        "SELECT * FROM tasks WHERE user_id = $1 AND is_deleted = false", 
+        [user_id]
+      );
+  
+      return result.rows;
+    } catch (error) {
+      console.error('Error fetching tasks:', error);
+      throw error; 
+    }
+  }
+  
+
   static async createTask(taskData) {
-    const { title, description, due_date, status = 'Pending', user_id = null } = taskData;
+    const {
+      title,
+      description,
+      due_date,
+      status = "Pending",
+      user_id,
+    } = taskData;
     const result = await pool.query(
       `INSERT INTO tasks (title, description, due_date, status, user_id) 
        VALUES ($1, $2, $3, $4, $5) RETURNING *`,

@@ -26,11 +26,13 @@ exports.login = async (req, res) => {
         expiresIn: "1h",
       });
 
-      res.cookie("Token", token, {
-        // اسم الكوكبز والبيانات الي داخل الكوكيز
-        httpOnly: true, // لا يمكن الوصول او التعديل على الكوكيز عن طريق الجافا سكربت في المتصفح
-        sameSite: "strict", 
-      });
+      res.cookie("Token", token, 
+        {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === "production",
+        sameSite: "strict",
+      }
+      );
 
       res.status(200).json({ message: "Logged in successfully" });
     } else {

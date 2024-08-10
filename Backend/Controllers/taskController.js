@@ -1,9 +1,27 @@
 const Task = require("../Models/taskModel");
 require("dotenv").config();
 
+
+exports.getUserTasks = async (req, res) => {
+  const user_id = req.user.id; 
+
+  try {
+    const tasks = await Task.getTasksByUserId(user_id);
+    res.status(200).json(tasks);
+  } catch (error) {
+    console.error("Error fetching tasks:", error);
+    res.status(500).json({
+      message: "Error fetching tasks",
+      error: error.message,
+    });
+  }
+};
+
+
 exports.addTask = async (req, res) => {
-  const { title, description, due_date, status, user_id } = req.body;
-  
+  const { title, description, due_date, status } = req.body;
+    const user_id = req.user.id; // الحصول على معرف المستخدم من التوكن
+
   if (!title || !description || !due_date || !status) {
     return res.status(400).json({ message: "All fields are required" });
   }

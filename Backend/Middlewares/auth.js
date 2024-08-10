@@ -13,7 +13,7 @@ const auth = (req, res, next) => {
     console.log("Decoded user:", user);
     next();
   } catch (error) {
-    res.clearCookies("Token");
+    res.clearCookies("Token"); 
     res.status(401).json({ message: "Invalid token" });
     console.error("Token verification error:", error);
     return res.redirect("/login");

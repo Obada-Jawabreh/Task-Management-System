@@ -4,8 +4,9 @@ const taskController = require("../Controllers/taskController");
 const auth = require("../Middlewares/auth.js"); 
 
 router.post("/task", auth, taskController.addTask);
+router.get("/task", auth, taskController.getUserTasks);
 router.get("/task/:id", auth, taskController.getTask);
-router.put("/task/:id", auth, taskController.updateTask);
-router.delete("/task/:id", auth, taskController.deleteTask);
+router.put("/task/put/:id", auth, taskController.updateTask);
+router.put("/task/del/:id", auth, taskController.deleteTask);
 
 module.exports = router;
