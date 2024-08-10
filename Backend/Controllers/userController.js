@@ -18,16 +18,25 @@ exports.register = async (req, res) => {
 
 exports.login = async (req, res) => {
   const { email, password } = req.body;
-  const user = await User.findByEmail(email);
+  try {
+    const user = await User.findByEmail(email);
 
-  if (user && (await bcrypt.compare(password, user.password))) {
-    const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET);
-    res.json({ token });
-  } else {
-    res.status(401).json({ message: "Invalid credentials" });
+    if (user && (await bcrypt.compare(password, user.password))) {
+      const token = jwt.sign({ id: user.id, email: user.email }, process.env.JWT_SECRET, {
+        expiresIn: "1h",
+      });
+
+      res.cookie("Token", token, {
+        // اسم الكوكبز والبيانات الي داخل الكوكيز
+        httpOnly: true, // لا يمكن الوصول او التعديل على الكوكيز عن طريق الجافا سكربت في المتصفح
+        sameSite: "strict", 
+      });
+
+      res.status(200).json({ message: "Logged in successfully" });
+    } else {
+      res.status(401).json({ message: "Invalid credentials" });
+    }
+  } catch (error) {
+    res.status(500).json({ message: "Error logging in", error: error.message });
   }
 };
-
-// exports.view = async (req, res) => {
-//   res.status(200).json({ message: "You can see data :)" });
-// };

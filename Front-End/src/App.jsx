@@ -5,13 +5,16 @@ import "./App.css";
 import SignUp from "./Pages/Signup";
 import LogIn from "./Pages/Login";
 import { Route, BrowserRouter, Routes, useLocation } from "react-router-dom";
+import Task from "./Pages/tasks";
 function App() {
   return (
     <>
       <BrowserRouter>
         <Routes>
+          
           <Route path="/SignUp" element={<SignUp />} />
           <Route path="/LogIn" element={<LogIn />} />
+          <Route path="/Task" element={<Task />} />
         </Routes>
       </BrowserRouter>
     </>

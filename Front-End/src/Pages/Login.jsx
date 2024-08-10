@@ -1,7 +1,9 @@
-import React, { useState } from "react";
+import React, { useState} from "react";
 import axios from "axios";
-
+import { useNavigate } from "react-router-dom";
 const LogIn = () => {
+  let navigate=useNavigate();
+
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
@@ -10,14 +12,18 @@ const LogIn = () => {
     try {
       const response = await axios.post(
         "http://localhost:5000/api/users/login",
-        { email, password }
+        { email, password },
+        { withCredentials: true }
       );
-      localStorage.setItem("token", response.data.token);
+      navigate("/Task")
       alert("Login successful!");
     } catch (error) {
+      console.error("Login error:", error); // سجل تفاصيل الخطأ لمزيد من التحليل
       alert("Login failed!");
     }
   };
+  
+  
 
   return (
     <section className="bg-gray-50 dark:bg-gray-900">

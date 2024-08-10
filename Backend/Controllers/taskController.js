@@ -2,11 +2,23 @@ const Task = require("../Models/taskModel");
 require("dotenv").config();
 
 exports.addTask = async (req, res) => {
-  const { name } = req.body;
+  const { title, description, due_date, status, user_id } = req.body;
+  
+  if (!title || !description || !due_date || !status) {
+    return res.status(400).json({ message: "All fields are required" });
+  }
+
   try {
-    const task = await Task.createTask(name);
+    const task = await Task.createTask({
+      title,
+      description,
+      due_date,
+      status,
+      user_id 
+    });
     res.status(201).json({ message: "Task created", task });
   } catch (error) {
+    console.error("Error creating task:", error); 
     res.status(500).json({
       message: "Error creating Task",
       error: error.message,
@@ -33,9 +45,19 @@ exports.getTask = async (req, res) => {
 
 exports.updateTask = async (req, res) => {
   const { id } = req.params;
-  const { name } = req.body;
+  const { title, description, due_date, status } = req.body;
+  
+  if (!title) {
+    return res.status(400).json({ message: "Title is required" });
+  }
+
   try {
-    const task = await Task.updateTask(id, name);
+    const task = await Task.updateTask(id, {
+      title,
+      description: description || null,
+      due_date: due_date || null,
+      status: status || 'Pending'
+    });
     if (task) {
       res.status(200).json({ message: "Task updated", task });
     } else {
