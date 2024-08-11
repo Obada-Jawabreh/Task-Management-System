@@ -16,7 +16,7 @@ const auth = (req, res, next) => {
     res.clearCookies("Token"); 
     res.status(401).json({ message: "Invalid token" });
     console.error("Token verification error:", error);
-    return res.redirect("/login");
+    return res.redirect("/");
   }
 };
 module.exports = auth;

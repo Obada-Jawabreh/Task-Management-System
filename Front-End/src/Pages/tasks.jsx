@@ -5,7 +5,6 @@ export default function Task() {
   const [tasks, setTasks] = useState([]);
   const [taskCard, setTaskCard] = useState([]);
   const [editingTask, setEditingTask] = useState(null);
-console.log("oo",tasks);
 
   const [taskForm, setTaskForm] = useState({
     title: "",
@@ -63,12 +62,12 @@ console.log("oo",tasks);
       } else {
         const response = await axios.post(
           "http://localhost:5000/api/tasks/task",
-          {
+          { 
             title: taskForm.title,
             description: taskForm.description || null,
             due_date: taskForm.due_date || null,
             status: taskForm.status || "Pending",
-          },
+          },          
           { withCredentials: true }
         );
         fetchTasks();
@@ -95,6 +94,7 @@ console.log("oo",tasks);
       due_date: task.due_date,
       status: task.status,
     });
+    fetchTasks();
   };
 
   const handleDeleteTask = async (id) => {
@@ -107,6 +107,7 @@ console.log("oo",tasks);
 
       setTaskCard(taskCard.filter((task) => task.id !== id));
       console.log("Task deleted");
+      fetchTasks();
     } catch (error) {
       console.error("Error deleting task:", error.response?.data);
       alert("Failed to delete task!");

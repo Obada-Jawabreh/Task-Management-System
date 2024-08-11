@@ -15,12 +15,12 @@ exports.getUserTasks = async (req, res) => {
       error: error.message,
     });
   }
-};
+};  
 
 
 exports.addTask = async (req, res) => {
   const { title, description, due_date, status } = req.body;
-    const user_id = req.user.id; // الحصول على معرف المستخدم من التوكن
+    const user_id = req.user.id; 
 
   if (!title || !description || !due_date || !status) {
     return res.status(400).json({ message: "All fields are required" });

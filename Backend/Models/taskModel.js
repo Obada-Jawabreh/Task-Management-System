@@ -4,17 +4,16 @@ class Task {
   static async getTasksByUserId(user_id) {
     try {
       const result = await pool.query(
-        "SELECT * FROM tasks WHERE user_id = $1 AND is_deleted = false", 
+        "SELECT * FROM tasks WHERE user_id = $1 AND is_deleted = false",
         [user_id]
       );
-  
+
       return result.rows;
     } catch (error) {
-      console.error('Error fetching tasks:', error);
-      throw error; 
+      console.error("Error fetching tasks:", error);
+      throw error;
     }
   }
-  
 
   static async createTask(taskData) {
     const {
